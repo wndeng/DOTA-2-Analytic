@@ -1,7 +1,7 @@
 # Product Name
 > Short blurb about what your product does.
 
-[![Contributors][npm-image]](https://github.com/wndeng/DOTA-2-Analytic/graphs/contributors)
+[![Contributors](https://img.shields.io/badge/Contributors-2-green)](https://github.com/wndeng/DOTA-2-Analytic/graphs/contributors)
 [![PyPI license](https://img.shields.io/pypi/l/ansicolortags.svg)](https://pypi.python.org/pypi/ansicolortags/)
 
 
@@ -35,6 +35,3 @@ Distributed under the MIT license. See ``LICENSE`` for more information.
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)
 5. Create a new Pull Request
-
-<!-- Markdown link & img dfn's -->
-[contributor-image]: https://img.shields.io/badge/Contributors-2-green
