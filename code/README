@@ -1,0 +1,15 @@
+All analytic code are in code_iterations. Iteration 2a is the final code for data set 1, and iteration 2b for data set 2. 
+
+For iteration 2a, and 2b, the MR code for cleaning can be ran by <./test.sh>. In test.sh, the input file, hdfs directory containing the data, and the output folder (in the same directory as data) can be specified. The queries used to get win rate data based on specific features are available in iteration2a/iteration2.hql for data set 1 and iteration2b/hive_queries for data set 2. All tables are stored as external tables in Hive. 
+
+For iteration 2a, the code is available in the analytic2 folder. The other folder is a test program for writing the MR code in analytic2.
+
+The folder hero_proc in iteration 2b is a small program used to generate the csv file for each hero's name and id. The instructions are available in the folder's README.
+
+Data set 1 can be found at: https://blog.opendota.com/2017/03/24/datadump2/. Loaded into hdfs at "hdfs://dumbo/user/ys3603/matches_small.csv"
+
+Data set 2 can be found at: http://academictorrents.com/details/5c5deeb6cfe1c944044367d2e7465fd8bd2f4acf. Unzipped data is loaded into hdfs at "hdfs://dumbo/user/wnd211/project/data.json".
+
+
+
+

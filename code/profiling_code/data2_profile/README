@@ -1,0 +1,13 @@
+Profiling:
+
+For Integer columns I recorded the min and the max. 
+
+For Integer array columns, I recorded the min and max length.
+
+For JsonElement columns, I can't really record anything since the data can be "different". This means it might not exist in the current Json item, it might be a JsonObject, or it might be a JsonArray. The information inside contains more JsonObjects and JsonArrays that describes game events. The possible table configurations of these columns are available at: 
+
+https://github.com/odota/core/blob/master/sql/create_tables.sql
+
+For the project, we will be decomposing these JsonElements into different tables using Hive. 
+
+Code can be ran using ./test.sh with the appropriate directories and file names.

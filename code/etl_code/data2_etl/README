@@ -1,0 +1,8 @@
+Clean Procedure:
+
+Only save import attributes described in Matches.class in CleanMapper.java, and choose only PvP matches (human_players = 10).
+
+Because the actual data is too big (474 GB decompressed), the output file is generated using a sample input of 3 matches.
+Pretty printing is enabled in GsonBuilder to make output readable.
+
+Code can be ran using ./test.sh with appropriate directories updated.

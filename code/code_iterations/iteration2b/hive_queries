@@ -1,0 +1,217 @@
+beeline -u jdbc:hive2://babar.es.its.nyu.edu:10000/wnd211 -n wnd211 -p Waersd2dfdfdf@1
+
+create external table hero_names (id int, name string) row format delimited fields terminated by ',' location 'hdfs://dumbo/user/wnd211/project/hero/';
+
+<<[(RE)LOAD DATA]>> 
+
+drop table original_data;
+create external table original_data (match_id string, radiant_win boolean, game_mode int, duration int, gold_10_min int, exp_10_min int, p1_hero int, p1_kills int, p1_assists int, p1_damage int, p1_gpm int, p1_xpm int, p2_hero int, p2_kills int, p2_assists int, p2_damage int, p2_gpm int, p2_xpm int, p3_hero int, p3_kills int, p3_assists int, p3_damage int, p3_gpm int, p3_xpm int, p4_hero int, p4_kills int, p4_assists int, p4_damage int, p4_gpm int, p4_xpm int, p5_hero int, p5_kills int, p5_assists int, p5_damage int, p5_gpm int, p5_xpm int, p6_hero int, p6_kills int, p6_assists int, p6_damage int, p6_gpm int, p6_xpm int, p7_hero int, p7_kills int, p7_assists int, p7_damage int, p7_gpm int, p7_xpm int, p8_hero int, p8_kills int, p8_assists int, p8_damage int, p8_gpm int, p8_xpm int, p9_hero int, p9_kills int, p9_assists int, p9_damage int, p9_gpm int, p9_xpm int, p10_hero int, p10_kills int, p10_assists int, p10_damage int, p10_gpm int, p10_xpm int) row format delimited fields terminated by ',' location 'hdfs://dumbo/user/wnd211/project/out';
+
+drop_table filtered_data;
+create external table filtered_data (match_id string, radiant_win boolean, game_mode int, duration int, gold_10_min int, exp_10_min int, p1_hero int, p1_kills int, p1_assists int, p1_damage int, p1_gpm int, p1_xpm int, p2_hero int, p2_kills int, p2_assists int, p2_damage int, p2_gpm int, p2_xpm int, p3_hero int, p3_kills int, p3_assists int, p3_damage int, p3_gpm int, p3_xpm int, p4_hero int, p4_kills int, p4_assists int, p4_damage int, p4_gpm int, p4_xpm int, p5_hero int, p5_kills int, p5_assists int, p5_damage int, p5_gpm int, p5_xpm int, p6_hero int, p6_kills int, p6_assists int, p6_damage int, p6_gpm int, p6_xpm int, p7_hero int, p7_kills int, p7_assists int, p7_damage int, p7_gpm int, p7_xpm int, p8_hero int, p8_kills int, p8_assists int, p8_damage int, p8_gpm int, p8_xpm int, p9_hero int, p9_kills int, p9_assists int, p9_damage int, p9_gpm int, p9_xpm int, p10_hero int, p10_kills int, p10_assists int, p10_damage int, p10_gpm int, p10_xpm int);
+
+insert into filtered_data select * from original_data where duration > 600 and (game_mode = 1 or game_mode = 2 or game_mode = 22);
+
+
+<<[Creating table to record win/loss for all heroes]>>
+
+alter table hero_win set TBLPROPERTIES('EXTERNAL'='False');
+drop table hero_win;
+create external table hero_win (match_id string, hero_id int, win boolean);
+
+insert into table hero_win select match_id, p1_hero, radiant_win from filtered_data;
+insert into table hero_win select match_id, p2_hero, radiant_win from filtered_data;
+insert into table hero_win select match_id, p3_hero, radiant_win from filtered_data;
+insert into table hero_win select match_id, p4_hero, radiant_win from filtered_data;
+insert into table hero_win select match_id, p5_hero, radiant_win from filtered_data;
+
+insert into table hero_win select *, false from (select match_id, p6_hero from filtered_data where radiant_win = true) t2;
+insert into table hero_win select *, true from (select match_id, p6_hero from filtered_data where radiant_win = false) t2;
+
+insert into table hero_win select *, false from (select match_id, p7_hero from filtered_data where radiant_win = true) t2;
+insert into table hero_win select *, true from (select match_id, p7_hero from filtered_data where radiant_win = false) t2;
+
+insert into table hero_win select *, false from (select match_id, p8_hero from filtered_data where radiant_win = true) t2;
+insert into table hero_win select *, true from (select match_id, p8_hero from filtered_data where radiant_win = false) t2;
+
+insert into table hero_win select *, false from (select match_id, p9_hero from filtered_data where radiant_win = true) t2;
+insert into table hero_win select *, true from (select match_id, p9_hero from filtered_data where radiant_win = false) t2;
+
+insert into table hero_win select *, false from (select match_id, p10_hero from filtered_data where radiant_win = true) t2;
+insert into table hero_win select *, true from (select match_id, p10_hero from filtered_data where radiant_win = false) t2;
+
+
+alter table hero_data set TBLPROPERTIES('EXTERNAL'='False');
+drop table hero_data;
+create external table hero_data (match_id string, hero_name string, win boolean);
+
+insert into hero_data select a.match_id, b.name, a.win from hero_win a join hero_names b on a.hero_id = b.id;
+
+create external table hero_win_count (hero_name string, count int);
+
+alter table hero_win_names set TBLPROPERTIES('EXTERNAL'='False');
+drop table hero_win_names;
+
+insert into hero_win_names select hero_name from hero_win where win = true;
+
+create external table hero_win_counts (hero_name string, wins int);
+
+insert into hero_win_counts select hero_name, count(*) from hero_win_names group by hero_name;
+
+create external table hero_game_counts (hero_name string, games int);
+
+insert into hero_game_counts select hero_name, count(*) from hero_data group by hero_name;
+
+alter table hero_game_tally set TBLPROPERTIES('EXTERNAL'='False');
+drop table hero_game_tally;
+create external table hero_game_tally (hero_name string, wins int, games int);
+
+insert into hero_game_tally hero_name, count(case win when 'true' then 1 else null end), count(*) from hero_data;
+
+alter table hero_win_rate_final set TBLPROPERTIES('EXTERNAL'='False');
+drop table hero_win_rate_final;
+create external table hero_win_rate_final (hero_name string, win_rate double);
+
+insert into hero_win_rate_final select hero_name, wins/CAST(games as double) from hero_game_tally;
+
+
+drop table hero_stats;
+create external table hero_stats (hero_id int, kills int, assists int, damage int, gpm int, xpm int);
+
+
+insert into table hero_stats select p1_hero, p1_kills, p1_assists, p1_damage, p1_gpm, p1_xpm from filtered_data;
+insert into table hero_stats select p2_hero, p2_kills, p2_assists, p2_damage, p2_gpm, p2_xpm from filtered_data;
+insert into table hero_stats select p3_hero, p3_kills, p3_assists, p3_damage, p3_gpm, p3_xpm from filtered_data;
+insert into table hero_stats select p4_hero, p4_kills, p4_assists, p4_damage, p4_gpm, p4_xpm from filtered_data;
+insert into table hero_stats select p5_hero, p5_kills, p5_assists, p5_damage, p5_gpm, p5_xpm from filtered_data;
+insert into table hero_stats select p6_hero, p6_kills, p6_assists, p6_damage, p6_gpm, p6_xpm from filtered_data;
+insert into table hero_stats select p7_hero, p7_kills, p7_assists, p7_damage, p7_gpm, p7_xpm from filtered_data;
+insert into table hero_stats select p8_hero, p8_kills, p8_assists, p8_damage, p8_gpm, p8_xpm from filtered_data;
+insert into table hero_stats select p9_hero, p9_kills, p9_assists, p9_damage, p9_gpm, p9_xpm from filtered_data;
+insert into table hero_stats select p10_hero, p10_kills, p10_assists, p10_damage, p10_gpm, p10_xpm from filtered_data;
+
+alter table hero_avg_stats set TBLPROPERTIES('EXTERNAL'='False');
+drop table hero_avg_stats;
+create external table hero_avg_stats (hero_id int, avg_kills int, avg_assists int, avg_damage int, avg_gpm int, avg_xpm int);
+
+insert into hero_avg_stats select hero_id, avg(kills), avg(assists), avg(damage), avg(gpm), avg(xpm) from hero_stats group by hero_id;
+
+insert into hero_avg_stats_final select a.name, b.avg_kills, b.avg_assists, b.avg_damage, b.avg_gpm, b.avg_xpm from hero_name a join hero_avg_stats b on a.id = b.hero_id
+
+<<[Get win rate for different hero team comps]>>
+
+create external table hero_team_win (match_id int, hero_id int, win boolean, team int);
+
+insert into table hero_team_win select match_id, p1_hero, radiant_win, 0 from filtered_data;
+insert into table hero_team_win select match_id, p2_hero, radiant_win, 0 from filtered_data;
+insert into table hero_team_win select match_id, p3_hero, radiant_win, 0 from filtered_data;
+insert into table hero_team_win select match_id, p4_hero, radiant_win, 0 from filtered_data;
+insert into table hero_team_win select match_id, p5_hero, radiant_win, 0 from filtered_data;
+
+insert into table hero_team_win select *, false, 1 from (select match_id, p6_hero from filtered_data where radiant_win = true) t2;
+insert into table hero_team_win select *, true, 1 from (select match_id, p6_hero from filtered_data where radiant_win = false) t2;
+
+insert into table hero_team_win select *, false, 1 from (select match_id, p7_hero from filtered_data where radiant_win = true) t2;
+insert into table hero_team_win select *, true, 1 from (select match_id, p7_hero from filtered_data where radiant_win = false) t2;
+
+insert into table hero_team_win select *, false, 1 from (select match_id, p8_hero from filtered_data where radiant_win = true) t2;
+insert into table hero_team_win select *, true, 1 from (select match_id, p8_hero from filtered_data where radiant_win = false) t2;
+
+insert into table hero_team_win select *, false, 1 from (select match_id, p9_hero from filtered_data where radiant_win = true) t2;
+insert into table hero_team_win select *, true, 1 from (select match_id, p9_hero from filtered_data where radiant_win = false) t2;
+
+insert into table hero_team_win select *, false, 1 from (select match_id, p10_hero from filtered_data where radiant_win = true) t2;
+insert into table hero_team_win select *, true, 1 from (select match_id, p10_hero from filtered_data where radiant_win = false) t2;
+
+create external table hero_team_win_name (match_id int, hero_name string, win boolean, team int);
+
+insert into hero_team_win_name b.match_id, a.name, b.win, b.team from hero_names a join hero_team_win b on a.id = b.hero_id;
+
+alter table hero_buddy_win set TBLPROPERTIES('EXTERNAL'='False');
+drop table hero_buddy_win;
+create external table hero_buddy_win (hero1 string, hero2 string, win boolean);
+
+insert into hero_buddy_win select a.hero_name, b.hero_name, a.win from hero_team_win_name a join hero_team_win_name b on a.match_id = b.match_id and a.team = b.team;
+
+insert overwrite table hero_buddy_win select * from hero_buddy_win where hero1 != hero2;
+
+create external table hero_buddy_tally (hero1 string, hero 2 string, wins int, games int);
+
+insert into hero_buddy_tally select hero1, hero2, count(case win when true then 1 else null end), count(*) from hero_buddy_win group by hero1, hero2;
+
+create external table hero_buddy_win_rate_final (hero1 string, hero2 string, win_rate double);
+
+insert overwrite table hero_buddy_win_rate_final select hero1, hero2, wins/CAST(games as double) from hero_buddy_tally;
+
+create external table hero_buddy_win_rate_neo (hero1 string, hero2 string, win_rate double);
+
+insert into table hero_buddy_win_rate_neo select * from hero_buddy_win_rate_final where hero1 > hero2;
+
+insert into table hero_buddy_win_rate_neo select hero2, hero1, win_rate from hero_buddy_win_rate_final where hero1 < hero2;
+
+insert overwrite table hero_buddy_win_rate_neo select distinct * from hero_buddy_win_rate_neo;
+
+<<[Hero enemy comp]>>
+
+create external table hero_enemy_win_tmp (hero1 string, hero2 string, win boolean, ateam int, bteam int);
+
+insert into hero_enemy_win_tmp select a.hero_name, b.hero_name, a.win, a.team, b.team from hero_team_win_name a join hero_team_win_name b on a.match_id = b.match_id;
+
+insert overwrite table hero_enemy_win select hero1, hero2, win from hero_enemy_win_tmp where hero1 != hero2 and ateam != bteam;
+
+create external table hero_enemy_tally (hero1 string, hero2 string, wins int, games int);
+
+insert overwrite table hero_enemy_tally select hero1, hero2, count(case win when true then 1 else null end), count(*) from hero_enemy_win group by hero1, hero2;
+
+create external table hero_enemy_win_rate_final (hero1 string, hero2 string, win_rate double);
+
+insert overwrite table hero_enemy_win_rate_final select hero1, hero2, wins/CAST(games as double) from hero_enemy_tally;
+
+
+<<[Extract data used for visualizations for paper/slides]>>
+
+beeline -u jdbc:hive2://babar.es.its.nyu.edu:10000/wnd211 -n wnd211 -p ***** --showHeader=false --outputformat=csv2 --silent -e "SELECT * FROM hero_win_rate_final" > win_rate.csv
+
+beeline -u jdbc:hive2://babar.es.its.nyu.edu:10000/wnd211 -n wnd211 -p *****  --showHeader=false --outputformat=csv2 --silent -e "SELECT * FROM hero_buddy_win_rate_final" > buddy_win_rate.csv
+
+beeline -u jdbc:hive2://babar.es.its.nyu.edu:10000/wnd211 -n wnd211 -p *****  --showHeader=false --outputformat=csv2 --silent -e "SELECT * FROM hero_enemy_win_rate_final" > enemy_win_rate.csv
+
+
+<<[Get each hero's popularity as percentage of games selected]>>
+
+create external table hero_name_stats (hero string, kills int, assists int, damage int, gpm int, xpm int);
+
+insert overwrite table hero_name_stats select a.name, b.kills, b.assists, b.damage, b.gpm, b.xpm from hero_names a join hero_stats b on a.id = b.hero_id;
+
+create external table hero_popularity_final (hero string, pick_rate double);
+
+select * from game_count; ==> 2612582.0
+
+insert overwrite table hero_popularity_final hero, count(*)/2612582.0 from hero_name_stats group by hero;
+
+<<[Hero Performance]>>
+
+create external table hero_stats_avg (hero string, avg_kills int, avg_assists int, avg_damage int, avg_gpm int, avg_xpm int);
+
+insert overwrite table hero_stats_avg hero, avg(kills), avg(assists), avg(damage), avg(gpm), avg(xpm) from hero_name_stats;
+
+<<[Get average stats of both teams for each match]>>
+
+create external table game_stats_avg (match_id string, radiant_kills int, radiant_assists int, radiant_damage int, radiant_gpm int, radiant_xpm int, dire_kills int, dire_assists int, dire_damage int, dire_gpm int, dire_xpm int, gold_adv int, exp_adv int, radiant_win boolean);
+
+insert overwrite table game_stats_avg select
+match_id,
+(p1_kills+p2_kills+p3_kills+p4_kills+p5_kills)/5,
+(p1_assists+p2_assists+p3_assists+p4_assists+p5_assists)/5,
+(p1_damage+p2_damage+p3_damage+p4_damage+p5_damage)/5,
+(p1_gpm+p2_gpm+p3_gpm+p4_gpm+p5_gpm)/5,
+(p1_xpm+p2_xpm+p3_xpm+p4_xpm+p5_xpm)/5,
+(p6_kills+p7_kills+p8_kills+p9_kills+p10_kills)/5,
+(p6_assists+p7_assists+p8_assists+p9_assists+p10_assists)/5,
+(p6_damage+p7_damage+p8_damage+p9_damage+p10_damage)/5,
+(p6_gpm+p7_gpm+p8_gpm+p9_gpm+p10_gpm)/5,
+(p6_xpm+p7_xpm+p8_xpm+p9_xpm+p10_xpm)/5,
+gold_10_min,
+exp_10_min,
+radiant_win
+from filtered_data;

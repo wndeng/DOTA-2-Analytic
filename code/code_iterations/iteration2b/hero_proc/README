@@ -1,0 +1,6 @@
+This program is used to parse hero.json into a csv file. MR is not used because the file has only 1 small JsonElement, so it cannot take advantage of MR.
+
+Program runs using the following commands:
+
+javac -cp gson.jar HeroParse.java
+java -cp .:gson.jar HeroParse > heroes
