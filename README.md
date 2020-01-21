@@ -4,15 +4,12 @@ This is a big data analytic project, done in collaboration with Yang Song, to ex
 
 [![Contributors](https://img.shields.io/badge/Contributors-2-green)](https://github.com/wndeng/DOTA-2-Analytic/graphs/contributors)
 [![License](https://img.shields.io/pypi/l/ansicolortags.svg)](https://opensource.org/licenses/MIT)
-[![Hive](https://img.shields.io/badge/Made%20with-yellow-green)](https://hive.apache.org/)
+[![Hive](https://img.shields.io/badge/Made%20with-Hive-yellow)](https://hive.apache.org/)
 [![Hadoop](https://img.shields.io/badge/Made%20with-Hadoop-yellowgreen)](http://hadoop.apache.org/)
 [![Python](https://img.shields.io/badge/Made%20with-Python-blue)](https://www.python.org/)
 [![HitCount](http://hits.dwyl.io/wndeng/DOTA-2-Analytic.svg)](http://hits.dwyl.io/wndeng/DOTA-2-Analytic)
 
-
-One to two paragraph statement about your product and what it does.
-
-<img src="other/dota2.png" alt="deleted" width="200" class="center"/>
+<img src="other/dota2.png" alt="deleted" width="200" align="middle"/>
 
 ## Meta
 
