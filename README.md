@@ -13,10 +13,15 @@ This is a big data analytic project, done in collaboration with Yang Song, to ex
     <img src="other/dota2.png" alt="deleted" width="200"/>
 </p>
 
+## Instructions
 
-## Meta
+Instructions for running the code as well as the hive queries are available in folder [code](https://github.com/wndeng/DOTA-2-Analytic/tree/master/code). 
+
+## Liscence
 
 Distributed under the MIT license. See ``LICENSE`` for more information.
+
+## Authors
 
 William Deng: [https://github.com/wndeng](https://github.com/wndeng/)
 
