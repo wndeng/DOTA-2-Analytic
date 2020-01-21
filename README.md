@@ -1,6 +1,6 @@
 # DOTA 2 Analytic
 
-This is a big data analytic project, done in collaboration with Yang Song, to explore factors that contribute to DOTA 2 win rate. The factors are extracted from match data collected by [YASP](http://academictorrents.com/details/5c5deeb6cfe1c944044367d2e7465fd8bd2f4acf). ETL and Profiling are done through Hadoop MapReduce, and analytic Hive queries. Results are available in [our paper](https://github.com/wndeng/DOTA-2-Analytic/blob/master/Paper.pdf). 
+
 
 [![Contributors](https://img.shields.io/badge/contributors-2-green)](https://github.com/wndeng/DOTA-2-Analytic/graphs/contributors)
 [![License](https://img.shields.io/pypi/l/ansicolortags.svg)](https://opensource.org/licenses/MIT)
@@ -12,6 +12,10 @@ This is a big data analytic project, done in collaboration with Yang Song, to ex
 <p align="center">
     <img src="other/dota2.png" alt="deleted" width="200"/>
 </p>
+
+## Introduction
+
+This is a big data analytic project, done in collaboration with Yang Song, to explore factors that contribute to DOTA 2 win rate. The factors are extracted from match data collected by [YASP](http://academictorrents.com/details/5c5deeb6cfe1c944044367d2e7465fd8bd2f4acf). ETL and Profiling are done through Hadoop MapReduce, and analytic Hive queries. Results are available in [our paper](https://github.com/wndeng/DOTA-2-Analytic/blob/master/Paper.pdf). 
 
 ## Instructions
 
