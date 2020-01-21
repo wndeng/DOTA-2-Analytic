@@ -12,7 +12,7 @@ This is a big data analytic project, done in collaboration with Yang Song, to ex
 
 One to two paragraph statement about your product and what it does.
 
-<img src="dota2.png" alt="deleted" width="200"/>
+<img src="other/dota2.png" alt="deleted" width="200"/>
 ![](other/dota2.png)
 
 ## Meta
