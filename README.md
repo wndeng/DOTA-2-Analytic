@@ -10,7 +10,7 @@ This is a big data analytic project, done in collaboration with Yang Song, to ex
 [![HitCount](http://hits.dwyl.io/wndeng/DOTA-2-Analytic.svg)](http://hits.dwyl.io/wndeng/DOTA-2-Analytic)
 
 <p class="center">
-    <img src="other/dota2.png" alt="deleted" width="200" align="center"/>
+    <img src="other/dota2.png" alt="deleted" width="200"/>
 </p>
 
 <style>
