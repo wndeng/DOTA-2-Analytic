@@ -21,7 +21,7 @@ This is a big data analytic project, done in collaboration with Yang Song, to ex
 
 Instructions for running the code as well as the hive queries are available in folder [code](https://github.com/wndeng/DOTA-2-Analytic/tree/master/code). 
 
-## Liscence
+## Licence
 
 Distributed under the MIT license. See ``LICENSE`` for more information.
 
