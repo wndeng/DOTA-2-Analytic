@@ -1,37 +1,22 @@
-# Product Name
-> Short blurb about what your product does.
+# DOTA 2 Analytic
+
+This is a big data analytic project, done in collaboration with Yang Song, to explore factors that contribute to DOTA 2 win rate. The factors are extracted from match data collected by YASP (http://academictorrents.com/details/5c5deeb6cfe1c944044367d2e7465fd8bd2f4acf). ETL and Profiling are done through Hadoop MapReduce, and analytic Hive queries. Results are available in [!][our paper](https://github.com/wndeng/DOTA-2-Analytic/blob/master/Paper.pdf). 
 
 [![Contributors](https://img.shields.io/badge/Contributors-2-green)](https://github.com/wndeng/DOTA-2-Analytic/graphs/contributors)
-[![PyPI license](https://img.shields.io/pypi/l/ansicolortags.svg)](https://pypi.python.org/pypi/ansicolortags/)
+[![License](https://img.shields.io/pypi/l/ansicolortags.svg)](https://opensource.org/licenses/MIT)
+[![Hive](https://img.shields.io/badge/Made%20with-yellow-green)](https://hive.apache.org/)
+[![Hadoop](https://img.shields.io/badge/Made%20with-Hadoop-yellowgreen)](http://hadoop.apache.org/)
+[![Python](https://img.shields.io/badge/Made%20with-Python-blue)](https://www.python.org/)
+[![HitCount](http://hits.dwyl.io/wndeng/DOTA-2-Analytic.svg)](http://hits.dwyl.io/wndeng/DOTA-2-Analytic)
 
 
 One to two paragraph statement about your product and what it does.
 
 ![](header.png)
 
-## Usage example
-
-A few motivating and useful examples of how your product can be used. Spice this up with code blocks and potentially more screenshots.
-
-_For more examples and usage, please refer to the [Wiki][wiki]._
-
-## Development setup
-
-Describe how to install all development dependencies and how to run an automated test-suite of some kind. Potentially do this for multiple platforms.
-
 ## Meta
-
-Your Name – [@YourTwitter](https://twitter.com/dbader_org) – YourEmail@example.com
 
 Distributed under the MIT license. See ``LICENSE`` for more information.
 
-[https://github.com/wndeng](https://github.com/wndeng/)
-[https://github.com/woshibala](https://github.com/woshibala/)
-
-## Contributing
-
-1. Fork it (<https://github.com/yourname/yourproject/fork>)
-2. Create your feature branch (`git checkout -b feature/fooBar`)
-3. Commit your changes (`git commit -am 'Add some fooBar'`)
-4. Push to the branch (`git push origin feature/fooBar`)
-5. Create a new Pull Request
+William Deng: [https://github.com/wndeng](https://github.com/wndeng/)
+Yang Song: [https://github.com/woshibala](https://github.com/woshibala/)
